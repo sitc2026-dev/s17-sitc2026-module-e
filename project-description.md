@@ -27,8 +27,8 @@ High-level capabilities (details in [Requirements](#requirements)):
 - ChargeRun grid game with per-run randomization, energy, packs, hazards, pedestrians, cabinet goal, and scoring
 - Charge Card studio: background (file input + drag-and-drop), dynamic text, signature, download, share, print
 - `localStorage` for display name
-- Use `Asia/Shanghai (zh-CN)` when formatting any visible date/time on the Charge Card.
-- Installable / downloadable web app from Chrome. You only have to provide the minimum configuration to make the APP installable.
+- Use Shanghai timezone and Chinese date format when formatting any visible date/time on the Charge Card.
+- Installable / downloadable web app from Chrome. You only have to provide the minimum configuration to make the APP installable. Logos can be found under the `assets/logos` folder.
 - Prefer labelled buttons and visible focus for DOM controls. Color must not be the only way to distinguish win vs lose.
 - Load card assets from [`assets`](./assets).
 - Target the latest **Google Chrome** for assessment.
@@ -204,7 +204,7 @@ The preview should have `16px` border radius.
 From bottom to top:
 
 1. **Background photo** - photo behind everything. The player can replace it. If no background is uploaded, a blue-green gradient should be displayed instead.
-2. **Brand overlay** - the supplied transparent PNG (`charge-card-overlay.png`) drawn at full card size. This provides the SwapLoop frame / logo art; do not redraw that art yourself.
+2. **Brand overlay** - the supplied transparent PNG (`/assets/charge-cards/charge-card-overlay.png`) drawn at full card size. This provides the SwapLoop frame / logo art; do not redraw that art yourself.
 3. **Dynamic text** drawn with canvas text APIs at the positions below:
    - **Name** - player display name
      - Font: 28px, regular
@@ -219,6 +219,7 @@ From bottom to top:
    - **Date** - the current date/time formatted with timezone `Asia/Shanghai (zh-CN)`
      - Font: 16px, regular
      - x: 50, y: 500
+     - Date format example: 2026/8/7 10:46:42
 4. **Signature** - ink strokes the player draws in the signature box.
    - x: 0, y: 358
    - width: 960, height: 120
@@ -233,7 +234,7 @@ You can find an example of the charge card in the `assets/charge-cards` folder.
 
 | Control           | Behaviour                                                           |
 | ----------------- | ------------------------------------------------------------------- |
-| Display name      | Text input; required for Download, Share, and Print, Stored locally |
+| Display name      | Text input; required for Download, Share, and Print; Stored locally |
 | Upload background | File input                                                          |
 | Reset background  | Restore the gradient                                                |
 | Clear signature   | Wipe signature strokes                                              |
