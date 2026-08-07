@@ -202,7 +202,7 @@ Compose the card on an HTML `<canvas>` inside the kiosk.
 From bottom to top:
 
 1. **Background photo** - full-bleed behind everything. The player can replace it. If no background is uploaded, a blue-green gradient should be displayed instead.
-2. **Brand overlay** - the supplied transparent PNG (`overlay.png`) drawn at full card size. This provides the SwapLoop frame / logo art; do not redraw that art yourself.
+2. **Brand overlay** - the supplied transparent PNG (`change-card-overlay.png`) drawn at full card size. This provides the SwapLoop frame / logo art; do not redraw that art yourself.
 3. **Dynamic text** drawn with canvas text APIs at the positions below:
    - **Name** - player display name
      - Font size: 28
@@ -222,6 +222,8 @@ From bottom to top:
    - width: 960, height: 120
 
 Use fill colour `#FFFFFF` for text. Signature stroke colour `#FFFFFF`, line width `3`. Load and use the webfonts from [`assets/fonts/`](./assets/fonts/) for canvas text (via `document.fonts` / `FontFace` as needed so text is drawn only after the font is ready).
+
+You can find an example of the change card in the `assets/change-cards` folder.
 
 #### Studio UI (DOM controls beside or below the canvas, still inside the kiosk)
 
@@ -248,7 +250,7 @@ Use fill colour `#FFFFFF` for text. Signature stroke colour `#FFFFFF`, line widt
 1. Provide a visible **file input** (or a button that opens one) accepting `image/jpeg`, `image/png`, and `image/webp`.
 2. Dropping a file onto the kiosk must run the **same** validation and apply pipeline as the file input, therefore uploading the background with drag-and-drop also works.
 3. Reject other MIME types with a visible message.
-4. Reject files whose **file size exceeds 5 MB** with a visible message.
+4. Reject files whose **file size exceeds 1 MB** with a visible message.
 5. Only accept background images with the same size as the card (960×540)
 6. Draw accepted images onto the card
 
