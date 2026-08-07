@@ -8,7 +8,7 @@ Competitors will have **3 hours** to complete this module.
 
 SwapLoop is a fictional Shanghai community pilot exploring safer alternatives to charging e-bike batteries indoors. Compatible delivery and private e-bikes exchange removable batteries at swap stations; e-bikes with integrated batteries use monitored charging bays; delivery partners can receive controlled priority access; and operators and safety inspectors manage sites, assets, and incidents.
 
-**ChargeRun** is a short on-kiosk game: the player steers an e-bike across a small street grid, collects energy packs, avoids pedestrians and oil hazards, and tries to reach a Battery Swap Cabinet before energy runs out. When the run ends (win or lose), the player opens the **Charge Card** studio - a canvas editor that builds a personal score card (background, SwapLoop frame, score text, and signature). The card can be downloaded, shared, or sent to a printer.
+**ChargeRun** is a short on-kiosk game: the player steers an e-bike across a small street grid, collects energy packs, avoids pedestrians and oil hazards, and tries to reach a Battery Swap Cabinet before energy runs out. When the run ends (win or lose), the player opens the **Charge Card** studio - a canvas editor that builds a personal score card (background, SwapLoop frame, score text, and signature). The card can be downloaded, shared, or sent to a printer. This card can be used at charging stations to receive free energy in the future, so it's worth collecting them! 🔋
 
 The application must run **independently**. It must **not** call a backend API, Station Service, or rider-facing REST endpoints. All behaviour is client-side, using the supplied card assets and the rules in this brief.
 
@@ -73,6 +73,12 @@ Build the game described here.
 
 The player controls an e-bike on a small city grid. Energy drains over time. Collect energy packs to stay powered. Avoid pedestrians and oil hazards. Reach the **Battery Swap Cabinet** with energy remaining to win.
 
+#### Design, Wireframe
+
+The competitor should design an application with a kiosk-like appearance. It should resemble a game while still feeling modern. Only the font is provided; colors and other elements are not. However, wireframes are provided. The layout does not have to be followed exactly. The wireframe only shows an example and displays the required items. The wireframe's "design" SHOULD NOT be followed.
+
+You can also find an example video on how the entire app should work.
+
 #### Run states
 
 | State     | Behaviour                                                                                                                                                                                                                  |
@@ -85,13 +91,8 @@ There is **no** Start button. Opening the Game screen always leaves the run in `
 #### Grid (fixed structure)
 
 1. Build a rectangular grid of **DOM cells** with **12 columns × 8 rows**.
-2. Hard-code one fixed base layout for:
-   - exactly **1** `SPAWN` cell
-   - exactly **1** `CABINET` cell
-   - enough `OBSTACLE` cells to shape the streets
-   - all other cells are `ROAD`
-3. The base layout should leave a walkable path from the spawn point to the cabinet. Place the spawn and cabinet far from each other, but ensure the game is winnable.
-4. Distinguish cell types visually (by color, border, or label). No sprite pack is supplied. Design it to look good and come up with a design that fits the vibe, in your opinion.
+2. A hardcoded grid has been provided for you in the `layout.js` file.
+3. Distinguish cell types visually (by color, border, label or texture).
 
 #### Per-run randomization
 
@@ -99,7 +100,7 @@ Every time a run is set up (app load, and every **Play again**), roll a **new** 
 
 1. **Energy packs (4):** randomly choose **4 distinct `ROAD` cells** that are not `SPAWN` and not `CABINET`. Place one energy pack on each. Among those four, randomly mark **exactly 1** as a **boost pack** (`+40` energy instead of `+25`).
 2. **Oil hazards (2):** randomly choose **2 distinct `ROAD` cells** that are not `SPAWN`, not `CABINET`, and not occupied by an energy pack. Place one oil hazard on each.
-3. **Pedestrian routes (2):** hard-code a catalogue of **at least 5** ping-pong patrol paths (each path is an ordered list of `ROAD` coordinates). For each run, randomly assign **2 different** paths from that catalogue to the two pedestrians. Randomly choose each pedestrian’s starting index on their path and whether they begin moving forward or backward along the path.
+3. **Pedestrian routes (2):** you are provided with hard-coded list of a few pedestrian paths in the `layout.js` file (each path is an ordered list of `ROAD` coordinates). For each run, randomly assign **2 different** paths from that catalogue to the two pedestrians. Randomly choose each pedestrian’s starting index on their path and whether they begin moving forward or backward along the path.
 4. After rolling, render the grid and place the player on `SPAWN` in `READY`.
 
 #### Player movement

@@ -41,10 +41,6 @@ export default function App() {
         data-kiosk="true"
         aria-label="SwapLoop ChargeRun kiosk"
       >
-        <div className="pointer-events-none absolute top-0 left-0 z-10 border-b border-r border-dashed border-neutral-800 bg-white/90 px-2 py-1 text-[10px] tracking-widest uppercase">
-          Wireframe kiosk 1280×720
-        </div>
-
         {screen === "game" && (
           <GameScreen key={runId} onRunEnd={handleRunEnd} />
         )}

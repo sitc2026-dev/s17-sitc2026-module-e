@@ -194,6 +194,7 @@ export default function ChargeCardStudio({
 
   useEffect(() => {
     if (!pendingBackgroundFile) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     applyBackgroundFile(pendingBackgroundFile).finally(() => {
       onBackgroundHandled?.();
     });
