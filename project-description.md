@@ -32,6 +32,7 @@ High-level capabilities (details in [Requirements](#requirements)):
 - Prefer labelled buttons and visible focus for DOM controls. Colour must not be the only way to distinguish win vs lose.
 - Load card assets from [`assets`](./assets).
 - Target the latest **Google Chrome** for assessment.
+- Use the provided `Inter` font wherever possible
 
 ### Vocabulary
 
