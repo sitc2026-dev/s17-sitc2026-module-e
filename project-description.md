@@ -28,7 +28,7 @@ High-level capabilities (details in [Requirements](#requirements)):
 - Charge Card studio: background (file input + drag-and-drop), dynamic text, signature, download, share, print
 - `localStorage` for display name
 - Use `Asia/Shanghai (zh-CN)` when formatting any visible date/time on the Charge Card.
-- Installable / downloadable web app from Chrome
+- Installable / downloadable web app from Chrome. You only have to provide the minimum configuration to make the APP installable.
 - Prefer labelled buttons and visible focus for DOM controls. Colour must not be the only way to distinguish win vs lose.
 - Load card assets from [`assets`](./assets).
 - Target the latest **Google Chrome** for assessment.
@@ -157,7 +157,6 @@ While on the Game screen, show continuously:
 
 - current **energy**
 - current **score**
-- **best score** from `localStorage`
 - run state hint when `READY` (`Press Arrow keys or WASD to start`)
 
 #### Scoring
@@ -187,36 +186,38 @@ Update the live score when packs/hazards change; finalise on run end.
 
 #### `localStorage`
 
-1. Display name key (string).
+1. Display name (string).
 2. In the Charge Card studio, prefill the display name input from `localStorage` when a saved name exists.
 
 ### Charge Card studio
 
-Opened from the Game end overlay via **Create Charge Card**. The Charge Card is a **personal score certificate** for that run: a single landscape image that combines a photo background, SwapLoop branding, the player’s name and score, and a handwritten signature. It is meant to be kept (download), sent to someone (share), or printed at the kiosk.
+Opened when the game ends. The Charge Card is a **personal score certificate** for that run: a single landscape image that combines a photo background, SwapLoop branding, the player’s name and score, and a handwritten signature. It is meant to be kept (download), sent to someone (share), or printed at the kiosk.
 
 Compose the card on an HTML `<canvas>` inside the kiosk.
 
-**Card size:** **960×540** pixels (landscape). The downloaded PNG must be 960×540. Should have `16px` border radius.
+**Card size:** **960×540** pixels (landscape). The downloaded PNG must be 960×540.
+
+The preview should have `16px` border radius.
 
 #### What appears on the card
 
 From bottom to top:
 
-1. **Background photo** - full-bleed behind everything. The player can replace it. If no background is uploaded, a blue-green gradient should be displayed instead.
-2. **Brand overlay** - the supplied transparent PNG (`change-card-overlay.png`) drawn at full card size. This provides the SwapLoop frame / logo art; do not redraw that art yourself.
+1. **Background photo** - photo behind everything. The player can replace it. If no background is uploaded, a blue-green gradient should be displayed instead.
+2. **Brand overlay** - the supplied transparent PNG (`charge-card-overlay.png`) drawn at full card size. This provides the SwapLoop frame / logo art; do not redraw that art yourself.
 3. **Dynamic text** drawn with canvas text APIs at the positions below:
    - **Name** - player display name
-     - Font size: 28
+     - Font: 28px, regular
      - x (right side): 800, y: 55
      - The text should have a right aligned feeling, where the right side is always at x=800
    - **Outcome** - exactly `SAFE ARRIVAL / 平安抵达` on win, or exactly `RUN ENDED / 比赛结束` on lose
-     - Font size: 32, semi bold
+     - Font: 32px, semi bold
      - x: centered, y: 127
    - **Score** - the numeric final score, large and prominent
-     - Font size: 128, bold
+     - Font: 128px, bold
      - x: centered, y: 171
    - **Date** - the current date/time formatted with timezone `Asia/Shanghai (zh-CN)`
-     - Font size: 16
+     - Font: 16px, regular
      - x: 50, y: 500
 4. **Signature** - ink strokes the player draws in the signature box.
    - x: 0, y: 358
@@ -224,7 +225,9 @@ From bottom to top:
 
 Use fill colour `#FFFFFF` for text. Signature stroke colour `#FFFFFF`, line width `3`. Load and use the webfonts from [`assets/fonts/`](./assets/fonts/) for canvas text (via `document.fonts` / `FontFace` as needed so text is drawn only after the font is ready).
 
-You can find an example of the change card in the `assets/change-cards` folder.
+The `x` and `y` are the coordinates of the top-left corner, unless specified otherwise.
+
+You can find an example of the charge card in the `assets/charge-cards` folder.
 
 #### Studio UI (DOM controls beside or below the canvas, still inside the kiosk)
 
@@ -249,9 +252,9 @@ You can find an example of the change card in the `assets/change-cards` folder.
 #### Background upload (file input + drag and drop)
 
 1. Provide a visible **file input** (or a button that opens one) accepting `image/jpeg`, `image/png`, and `image/webp`.
-2. Dropping a file onto the kiosk must run the **same** validation and apply pipeline as the file input, therefore uploading the background with drag-and-drop also works.
+2. Dropping a file onto the **kiosk** must run the **same** validation and apply pipeline as the file input, therefore uploading the background with drag-and-drop also works.
 3. Reject other MIME types with a visible message.
-4. Reject files whose **file size exceeds 1 MB** with a visible message.
+4. Reject files whose **file size exceeds 5 MB** with a visible message.
 5. Only accept background images with the same size as the card (960×540)
 6. Draw accepted images onto the card
 
