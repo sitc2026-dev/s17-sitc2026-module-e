@@ -29,7 +29,7 @@ High-level capabilities (details in [Requirements](#requirements)):
 - `localStorage` for display name
 - Use `Asia/Shanghai (zh-CN)` when formatting any visible date/time on the Charge Card.
 - Installable / downloadable web app from Chrome. You only have to provide the minimum configuration to make the APP installable.
-- Prefer labelled buttons and visible focus for DOM controls. Colour must not be the only way to distinguish win vs lose.
+- Prefer labelled buttons and visible focus for DOM controls. Color must not be the only way to distinguish win vs lose.
 - Load card assets from [`assets`](./assets).
 - Target the latest **Google Chrome** for assessment.
 - Use the provided `Inter` font wherever possible
@@ -223,7 +223,7 @@ From bottom to top:
    - x: 0, y: 358
    - width: 960, height: 120
 
-Use fill colour `#FFFFFF` for text. Signature stroke colour `#FFFFFF`, line width `3`. Load and use the webfonts from [`assets/fonts/`](./assets/fonts/) for canvas text (via `document.fonts` / `FontFace` as needed so text is drawn only after the font is ready).
+Use fill color `#FFFFFF` for text. Signature stroke color `#FFFFFF`, line width `3`. Load and use the webfonts from [`assets/fonts/`](./assets/fonts/) for canvas text (via `document.fonts` / `FontFace` as needed so text is drawn only after the font is ready).
 
 The `x` and `y` are the coordinates of the top-left corner, unless specified otherwise.
 
@@ -247,7 +247,7 @@ You can find an example of the charge card in the `assets/charge-cards` folder.
 1. Trim whitespace.
 2. If empty, block Download, Share, and Print and show a visible field error.
 3. Prefill from `localStorage` when set.
-4. Persist the trimmed name to that key when Download, Share, or Print is successfully initiated.
+4. Persist the trimmed name when Download, Share, or Print is successfully initiated.
 
 #### Background upload (file input + drag and drop)
 
@@ -260,7 +260,7 @@ You can find an example of the charge card in the `assets/charge-cards` folder.
 
 #### Signature pad
 
-1. Draw with mouse on the card canvas
+1. Draw with mouse on the card canvas (touch support is not required for now)
 2. Clip all strokes to the signature box - no marks outside the box.
 3. **Clear signature** removes all strokes.
 4. If empty, block Download, Share, and Print and show: `Please sign inside the box`.
