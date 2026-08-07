@@ -14,9 +14,9 @@ The task was modularized and standardized for the Erasmus+ **"Marketable IT Skil
 
 ## Content
 
-- [Project Description](project-description.md)
-- [Assets](assets/)
-- [Marking Scheme](marking/marking-scheme.json)
+- [Project Description](./project-description.md)
+- [Assets](./assets/)
+- [Marking Scheme](./marking/marking-scheme.json)
 
 ## About the project
 
