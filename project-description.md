@@ -8,9 +8,7 @@ Competitors will have **3 hours** to complete this module.
 
 SwapLoop is a fictional Shanghai community pilot exploring safer alternatives to charging e-bike batteries indoors. Compatible delivery and private e-bikes exchange removable batteries at swap stations; e-bikes with integrated batteries use monitored charging bays; delivery partners can receive controlled priority access; and operators and safety inspectors manage sites, assets, and incidents.
 
-This competition does **not** ask for a finished production platform. This module is a **working prototype** of a **station kiosk mini-game and personal Charge Card studio**: a standalone single-page application for a SwapLoop community open day.
-
-**ChargeRun** is a short on-kiosk game: the player steers an e-bike across a small street grid, collects energy packs, avoids pedestrians and oil hazards, and tries to reach a Battery Swap Cabinet before energy runs out. When the run ends (win or lose), the player opens the **Charge Card** studio — a canvas editor that builds a personal score card (background, SwapLoop frame, score text, and signature). The card can be downloaded, shared, or sent to a printer.
+**ChargeRun** is a short on-kiosk game: the player steers an e-bike across a small street grid, collects energy packs, avoids pedestrians and oil hazards, and tries to reach a Battery Swap Cabinet before energy runs out. When the run ends (win or lose), the player opens the **Charge Card** studio - a canvas editor that builds a personal score card (background, SwapLoop frame, score text, and signature). The card can be downloaded, shared, or sent to a printer.
 
 The application must run **independently**. It must **not** call a backend API, Station Service, or rider-facing REST endpoints. All behaviour is client-side, using the supplied card assets and the rules in this brief.
 
@@ -20,64 +18,40 @@ Implement an independently runnable single-page application presented as a **fix
 
 There are **exactly two screens**:
 
-1. **Game** — ChargeRun (DOM/CSS/JS, **not** canvas), keyboard-controlled.
-2. **Charge Card studio** — canvas compositor with upload, signature, download, share, and print.
-
-Assessors mark the solution using only a browser, the supplied card assets, and this brief.
+1. **Game** - ChargeRun (DOM/CSS/JS), keyboard-controlled.
+2. **Charge Card studio** - canvas compositor with upload, signature, download, share, and print.
 
 High-level capabilities (details in [Requirements](#requirements)):
 
-- Fixed **1280×720** px kiosk shell (not responsive)
-- SPA flow between **Game** and **Card studio** only
+- Fixed **1280×720** px kiosk shell (not responsive) - align the kiosk in the middle of the screen
 - ChargeRun grid game with per-run randomisation, energy, packs, hazards, pedestrians, cabinet goal, and scoring
-- Charge Card studio: background (file input + drag-and-drop), overlay, dynamic text, signature, download, share, print
-- `localStorage` for display name and best score
-- Installable / downloadable web app from Chrome
-
-### Environment and stack
-
-- Build a **client-side SPA** with any allowed front-end stack (vanilla HTML/CSS/JS or a listed framework).
-- **No application backend.** Static file hosting or the framework’s dev server is enough. No database.
-- Use the HTML **Canvas** API for the **Charge Card studio only**. The game must **not** use canvas.
-- Load card assets from [`assets/module-e/`](./assets/module-e/).
-- Persist the display name and best score with **`localStorage`** as specified below.
-
-### Technical constraints
-
-- Target the latest **Google Chrome** for assessment.
-- The kiosk stage is exactly **1280×720** pixels. It must **not** be responsive: do not scale, reflow, or redesign the layout for other viewport sizes. Centre the fixed stage on the page; ignore the surrounding page area.
+- Charge Card studio: background (file input + drag-and-drop), dynamic text, signature, download, share, print
+- `localStorage` for display name
 - Use `Asia/Shanghai` when formatting any visible date/time on the Charge Card.
-- Do **not** call external network APIs for game logic, scoring, or image processing. Web Share may open the OS share sheet; printing may open the browser print dialog.
-- Do **not** require a camera, microphone, WebGL, or native app shell.
+- Installable / downloadable web app from Chrome
 - Prefer labelled buttons and visible focus for DOM controls. Colour must not be the only way to distinguish win vs lose.
-- Real payments, real partner branding, real geo maps, multiplayer, physics engines, and machine learning are out of scope.
+- Load card assets from [`assets`](./assets).
+- Target the latest **Google Chrome** for assessment.
 
-### Physical vocabulary
+### Vocabulary
 
 | Term                     | Meaning                                              |
 | ------------------------ | ---------------------------------------------------- |
-| **SwapLoop**             | Fictional operator / platform brand                  |
+| **SwapLoop**             | Platform brand                                       |
 | **ChargeRun**            | Name of this kiosk mini-game                         |
 | **Charge Card**          | Personal achievement image created after a run       |
 | **SwapLoop Station**     | Service location the cabinet belongs to in the story |
-| **Battery Swap Cabinet** | Goal cell — reach it with energy remaining to win    |
+| **Battery Swap Cabinet** | Goal cell - reach it with energy remaining to win    |
 | **Energy pack**          | Collectible that restores energy                     |
 | **Oil hazard**           | One-time energy penalty cell                         |
-| **Pedestrian**           | Moving obstacle — collision loses the run            |
-
-### Framing guardrails
-
-- This is a **personal** achievement card and a **local** best score — **not** a public leaderboard of people.
-- Do **not** rank, score, or shame riders, communities, or businesses in the UI.
-- Hitting a pedestrian is a failure, never a source of points.
-- Tone is light and operational (“charge safely outside the home”), not fear-based.
+| **Pedestrian**           | Moving obstacle - collision loses the run            |
 
 ### Suggested time split
 
-| Block | Focus                                                                       | Approx. time |
-| ----- | --------------------------------------------------------------------------- | ------------ |
-| A     | Kiosk shell, ChargeRun (including randomisation), `localStorage` best score | ~1.5 hours   |
-| B     | Charge Card studio + installable web app                                    | ~1.5 hours   |
+| Block | Focus                  | Approx. time |
+| ----- | ---------------------- | ------------ |
+| A     | Kiosk shell, ChargeRun | ~1.5 hours   |
+| B     | Charge Card studio     | ~1.5 hours   |
 
 ## Requirements
 
@@ -238,15 +212,15 @@ Compose the card on an HTML `<canvas>` inside the kiosk.
 
 From bottom to top:
 
-1. **Background photo** — full-bleed behind everything. Starts as the supplied default image; the player may replace it.
-2. **Dim layer** — a full-card semi-transparent black rectangle at **35%** opacity (`rgba(0, 0, 0, 0.35)`) so white/light text stays readable on any photo.
-3. **Brand overlay** — the supplied transparent PNG (`overlay.png`) drawn at full card size. This provides the SwapLoop frame / logo art; do not redraw that art yourself.
+1. **Background photo** - full-bleed behind everything. Starts as the supplied default image; the player may replace it.
+2. **Dim layer** - a full-card semi-transparent black rectangle at **35%** opacity (`rgba(0, 0, 0, 0.35)`) so white/light text stays readable on any photo.
+3. **Brand overlay** - the supplied transparent PNG (`overlay.png`) drawn at full card size. This provides the SwapLoop frame / logo art; do not redraw that art yourself.
 4. **Dynamic text** drawn with canvas text APIs at the positions below:
-   - **Name** — player display name
-   - **Outcome** — exactly `SAFE ARRIVAL` on win, or exactly `RUN ENDED` on lose
-   - **Score** — the numeric final score, large and prominent
-   - **Date** — the current date/time formatted with timezone `Asia/Shanghai`
-5. **Signature** — ink strokes the player draws in the signature box.
+   - **Name** - player display name
+   - **Outcome** - exactly `SAFE ARRIVAL` on win, or exactly `RUN ENDED` on lose
+   - **Score** - the numeric final score, large and prominent
+   - **Date** - the current date/time formatted with timezone `Asia/Shanghai`
+5. **Signature** - ink strokes the player draws in the signature box.
 
 #### Layout coordinates
 
@@ -256,7 +230,7 @@ Follow [`assets/module-e/data/card-layout.json`](./assets/module-e/data/card-lay
 | ------------- | --------------------------------------------------------------- |
 | Name          | baseline at `(80, 120)`                                         |
 | Outcome       | baseline at `(80, 170)`                                         |
-| Score         | baseline at `(80, 260)` — font size larger than the other lines |
+| Score         | baseline at `(80, 260)` - font size larger than the other lines |
 | Date          | baseline at `(80, 320)`                                         |
 | Signature box | `{ x: 80, y: 400, w: 800, h: 100 }`                             |
 
@@ -295,7 +269,7 @@ Use fill colour `#FFFFFF` for text unless the overlay asset documentation specif
 #### Signature pad
 
 1. Draw with pointer/mouse on the card canvas (or a dedicated signature canvas composited into the card).
-2. Clip all strokes to the signature box — no marks outside the box.
+2. Clip all strokes to the signature box - no marks outside the box.
 3. Draw a visible rectangle for the signature box on the card (or rely on overlay art that already shows it; if the overlay does not, stroke the box).
 4. **Clear signature** removes all strokes.
 5. **Empty signature:** before Download, Share, or Print, read pixels inside the signature box. If no pixel has alpha **&gt; 8**, the signature is empty.
@@ -310,8 +284,8 @@ Use fill colour `#FFFFFF` for text unless the overlay asset documentation specif
 
 ### Required screens / areas
 
-- **Game** — DOM grid, HUD (energy, score, best score), `READY` hint, keyboard hint, end overlay (`WIN`/`LOSE`, scores, Create Charge Card)
-- **Charge Card studio** — canvas preview + name, file input, drag-and-drop zone, reset background, clear signature, download, share, print, Play again
+- **Game** - DOM grid, HUD (energy, score, best score), `READY` hint, keyboard hint, end overlay (`WIN`/`LOSE`, scores, Create Charge Card)
+- **Charge Card studio** - canvas preview + name, file input, drag-and-drop zone, reset background, clear signature, download, share, print, Play again
 - Error states: empty name, empty signature, invalid file type, file too large, image dimensions too large, share unavailable
 
 ### Independence
@@ -334,7 +308,7 @@ assets/module-e/
 │       ├── overlay.png
 │       └── default-background.jpg
 └── fonts/
-    └── (provided webfont files — use these for Charge Card canvas text)
+    └── (provided webfont files - use these for Charge Card canvas text)
 ```
 
 `card-layout.json` shape:
