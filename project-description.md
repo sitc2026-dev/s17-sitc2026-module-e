@@ -208,7 +208,7 @@ From bottom to top:
 3. **Dynamic text** drawn with canvas text APIs at the positions below:
    - **Name** - player display name
      - Font: 28px, regular
-     - x (right side): 800, y: 55
+     - x (right edge): 927, y: 55
      - The text should have a right aligned feeling, where the right side is always at x=800
    - **Outcome** - exactly `SAFE ARRIVAL / 平安抵达` on win, or exactly `RUN ENDED / 比赛结束` on lose
      - Font: 32px, semi bold
