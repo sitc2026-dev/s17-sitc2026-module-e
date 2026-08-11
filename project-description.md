@@ -54,6 +54,12 @@ High-level capabilities (details in [Requirements](#requirements)):
 | A     | Kiosk shell, ChargeRun | ~1.5 hours   |
 | B     | Charge Card studio     | ~1.5 hours   |
 
+### Design, Wireframe
+
+The competitor should design an application with a kiosk-like appearance. It should resemble a game while still feeling modern. Only the font is provided; colors and other elements are not. However, wireframes are provided. The layout does not have to be followed exactly. The wireframe only shows an example and displays the required items. The wireframe's "design" SHOULD NOT be followed.
+
+You can also find an example video on how the entire app should work.
+
 ## Requirements
 
 ### Kiosk shell and navigation
@@ -72,12 +78,6 @@ Build the game described here.
 #### Story and goal
 
 The player controls an e-bike on a small city grid. Energy drains over time. Collect energy packs to stay powered. Avoid pedestrians and oil hazards. Reach the **Battery Swap Cabinet** with energy remaining to win.
-
-#### Design, Wireframe
-
-The competitor should design an application with a kiosk-like appearance. It should resemble a game while still feeling modern. Only the font is provided; colors and other elements are not. However, wireframes are provided. The layout does not have to be followed exactly. The wireframe only shows an example and displays the required items. The wireframe's "design" SHOULD NOT be followed.
-
-You can also find an example video on how the entire app should work.
 
 #### Run states
 
