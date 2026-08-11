@@ -58,11 +58,13 @@ High-level capabilities (details in [Requirements](#requirements)):
 | A     | Kiosk shell, ChargeRun | ~1.5 hours   |
 | B     | Charge Card studio     | ~1.5 hours   |
 
-### Design, Wireframe
+### Design and wireframes
 
-The competitor should design an application with a kiosk-like appearance. It should resemble a game while still feeling modern. Only the font is provided; colors and other elements are not. However, wireframes are provided. The layout does not have to be followed exactly. The wireframe only shows an example and displays the required items. The wireframe's "design" SHOULD NOT be followed.
+The competitor should design a **kiosk-like** ChargeRun screen with a modern, game-like feel. Only the **Inter** font is provided. Colors, layout details, and visual style are up to the competitor. Wireframes and the example video are **functional references only** (required items and behaviour). They show structure, not the look to copy; the wireframe design itself must not be reproduced.
 
-You can also find an example video on how the entire app should work.
+Game objects - the e-bike, energy packs, boost pack, potholes, pedestrians, cabinet, and terrain - should be **creative CSS shapes** built with DOM/CSS (gradients, shadows, glow, pseudo-elements, subtle animation). Plain coloured boxes with text labels are not enough. Each item must be **instantly distinguishable** by shape and styling, not colour alone.
+
+The HUD, the Legend, and the Charge Card studio should share one coherent SwapLoop style.
 
 ## Requirements
 
@@ -278,7 +280,7 @@ You can find an example of the charge card in the `assets/charge-cards` folder.
 3. **Print:** open the browser print dialog so the Charge Card can be printed. Print the card image. Do not print the entire kiosk.
 4. Do not upload the image to a custom server.
 
-Game visuals (player, pedestrians, packs, potholes, cabinet, obstacles) are built by the competitor with DOM/CSS or simple self-added images.
+Game visuals (player, pedestrians, packs, potholes, cabinet, obstacles) are built by the competitor with **creative DOM/CSS** - see [Design and wireframes](#design-and-wireframes). Each object must be visually distinct; simple coloured boxes with text labels are not sufficient.
 
 ## Assessment
 
