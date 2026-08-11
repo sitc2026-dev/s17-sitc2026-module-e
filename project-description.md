@@ -217,12 +217,12 @@ From bottom to top:
      - Font: 28px, regular
      - x (right edge): 927, y: 55
      - The text should have a right aligned feeling, where the right side is always at x=800
-   - **Outcome** - exactly `SAFE ARRIVAL / 平安抵达` on win, or exactly `RUN ENDED / 比赛结束` on lose
+   - **Outcome** - exactly `SAFE ARRIVAL / 平安抵达` (with color #91FF89) on win, or exactly `RUN ENDED / 比赛结束` (with color #FF8989) on lose
      - Font: 32px, semi bold
-     - x: centered, y: 127
+     - x: centered, y: 135
    - **Score** - the numeric final score, large and prominent
      - Font: 128px, bold
-     - x: centered, y: 171
+     - x: centered, y: 185
    - **Date** - the current date/time formatted with timezone `Asia/Shanghai (zh-CN)`
      - Font: 16px, regular
      - x: 50, y: 500
