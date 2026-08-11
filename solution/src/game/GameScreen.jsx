@@ -351,9 +351,6 @@ export default function GameScreen({ onRunEnd }) {
           <div>
             Score: <span className="font-bold">{score}</span>
           </div>
-          <div>
-            State: <span className="font-bold">{state}</span>
-          </div>
         </div>
       </header>
 
