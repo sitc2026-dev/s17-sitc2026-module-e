@@ -128,15 +128,15 @@ Every time a run is set up (app load, and every **Play again**), roll a **new** 
 
 #### Energy
 
-| Rule               | Value                                                                                              |
-| ------------------ | -------------------------------------------------------------------------------------------------- |
-| Starting energy    | `100`                                                                                              |
-| Maximum energy     | `100`                                                                                              |
-| Drain              | `5` energy points every **1 second** while `RUNNING`                                               |
-| Normal energy pack | Entering its cell: `+25` energy (clamp to 100); remove the pack                                    |
-| Boost energy pack  | Entering its cell: `+40` energy (clamp to 100); remove the pack                                    |
+| Rule               | Value                                                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| Starting energy    | `100`                                                                                                               |
+| Maximum energy     | `100`                                                                                                               |
+| Drain              | `15` energy points every **1 second** while `RUNNING`                                                               |
+| Normal energy pack | Entering its cell: `+25` energy (clamp to 100); remove the pack                                                     |
+| Boost energy pack  | Entering its cell: `+40` energy (clamp to 100); remove the pack                                                     |
 | Pothole            | Entering its cell the first time: `−15` energy (clamp to 0) and `−30` score; then remove the pothole from that cell |
-| Energy reaches `0` | Immediate `LOSE`                                                                                   |
+| Energy reaches `0` | Immediate `LOSE`                                                                                                    |
 
 Energy does **not** drain in `READY`.
 

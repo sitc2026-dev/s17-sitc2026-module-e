@@ -87,7 +87,7 @@ export default function GameScreen({ onRunEnd }) {
         remainingEnergy: energy,
         potholePenalty: potholesTriggered * 30,
       }),
-    [normalPacksCollected, boostPackCollected, energy, potholesTriggered],
+    [normalPacksCollected, boostPackCollected, energy, potholesTriggered]
   );
 
   const finishRun = useCallback((outcome, collisionPenalty, snapshot) => {
@@ -116,7 +116,7 @@ export default function GameScreen({ onRunEnd }) {
       nextPotholes,
       nextNormal,
       nextBoost,
-      nextPotholesTriggered,
+      nextPotholesTriggered
     ) => {
       let energyValue = nextEnergy;
       let packsValue = nextPacks;
@@ -126,7 +126,7 @@ export default function GameScreen({ onRunEnd }) {
       let potholesTriggeredValue = nextPotholesTriggered;
 
       const pack = packsValue.find(
-        (p) => p.x === nextPlayer.x && p.y === nextPlayer.y,
+        (p) => p.x === nextPlayer.x && p.y === nextPlayer.y
       );
       if (pack) {
         if (pack.kind === "boost") {
@@ -137,18 +137,18 @@ export default function GameScreen({ onRunEnd }) {
           normalValue += 1;
         }
         packsValue = packsValue.filter(
-          (p) => !(p.x === pack.x && p.y === pack.y),
+          (p) => !(p.x === pack.x && p.y === pack.y)
         );
       }
 
       const pothole = potholesValue.find(
-        (hole) => hole.x === nextPlayer.x && hole.y === nextPlayer.y,
+        (hole) => hole.x === nextPlayer.x && hole.y === nextPlayer.y
       );
       if (pothole) {
         energyValue = clampEnergy(energyValue - 15);
         potholesTriggeredValue += 1;
         potholesValue = potholesValue.filter(
-          (hole) => !(hole.x === pothole.x && hole.y === pothole.y),
+          (hole) => !(hole.x === pothole.x && hole.y === pothole.y)
         );
       }
 
@@ -161,7 +161,7 @@ export default function GameScreen({ onRunEnd }) {
         potholesTriggeredValue,
       };
     },
-    [],
+    []
   );
 
   const checkPedestrianCollision = useCallback((playerPos, peds) => {
@@ -203,7 +203,7 @@ export default function GameScreen({ onRunEnd }) {
         potholesRef.current,
         normalRef.current,
         boostRef.current,
-        potholesTriggeredRef.current,
+        potholesTriggeredRef.current
       );
 
       setPlayer(nextPlayer);
@@ -251,7 +251,7 @@ export default function GameScreen({ onRunEnd }) {
         finishRun("WIN", 0, { ...snapshot, elapsedWholeSeconds: elapsed });
       }
     },
-    [applyCellEffects, checkPedestrianCollision, finishRun],
+    [applyCellEffects, checkPedestrianCollision, finishRun]
   );
 
   useEffect(() => {
@@ -274,7 +274,7 @@ export default function GameScreen({ onRunEnd }) {
     const energyTimer = window.setInterval(() => {
       if (endedRef.current || stateRef.current !== "RUNNING") return;
 
-      const nextEnergy = clampEnergy(energyRef.current - 5);
+      const nextEnergy = clampEnergy(energyRef.current - 15);
       const nextElapsed = elapsedRef.current + 1;
       setEnergy(nextEnergy);
       setElapsedWholeSeconds(nextElapsed);
@@ -324,7 +324,7 @@ export default function GameScreen({ onRunEnd }) {
 
   const potholeSet = useMemo(
     () => new Set(potholes.map((hole) => cellKey(hole.x, hole.y))),
-    [potholes],
+    [potholes]
   );
 
   const pedMap = useMemo(() => {
@@ -430,12 +430,10 @@ export default function GameScreen({ onRunEnd }) {
                         {pack.kind === "boost" ? "BOOST" : "PACK"}
                       </span>
                     )}
-                    {hasPothole && (
-                      <span className="font-semibold">HOLE</span>
-                    )}
+                    {hasPothole && <span className="font-semibold">HOLE</span>}
                   </div>
                 );
-              }),
+              })
             )}
           </div>
         </div>
