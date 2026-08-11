@@ -8,9 +8,13 @@ Competitors will have **3 hours** to complete this module.
 
 SwapLoop is a fictional Shanghai community pilot exploring safer alternatives to charging e-bike batteries indoors. Compatible delivery and private e-bikes exchange removable batteries at swap stations; e-bikes with integrated batteries use monitored charging bays; delivery partners can receive controlled priority access; and operators and safety inspectors manage sites, assets, and incidents.
 
-**ChargeRun** is a short on-kiosk game: the player steers an e-bike across a small street grid, collects energy packs, avoids pedestrians and oil hazards, and tries to reach a Battery Swap Cabinet before energy runs out. When the run ends (win or lose), the player opens the **Charge Card** studio - a canvas editor that builds a personal score card (background, SwapLoop frame, score text, and signature). The card can be downloaded, shared, or sent to a printer. This card can be used at charging stations to receive free energy in the future, so it's worth collecting them! 🔋
+Each **SwapLoop Station** includes a touchscreen kiosk next to the battery swap cabinet. While riders wait for a fresh battery pack or a monitored bay to open, the kiosk offers a short branded minigame.
 
-The application must run **independently**. It must **not** call a backend API, Station Service, or rider-facing REST endpoints. All behaviour is client-side, using the supplied card assets and the rules in this brief.
+**ChargeRun** is that kiosk experience! The player steers an e-bike, collects energy packs, avoids pedestrians and oil hazards, and tries to reach the Battery Swap Cabinet before energy runs out. A successful run mirrors what SwapLoop asks of real riders: arrive at the station powered, not stranded.
+
+When the run ends (win or lose), the kiosk opens the **Charge Card** studio. A canvas editor where the player builds a personal score card (background photo, SwapLoop frame, score text, and signature). The card can be downloaded, shared, or sent to the station printer. Collecting Charge Cards is part of the pilot's community engagement: riders keep them as souvenirs and, in the story, can redeem them for promotional swap credits at participating stations. 🔋
+
+The application you build must run **independently**. It must **not** call a backend API, Station Service, or rider-facing REST endpoints. All behaviour is client-side, using the supplied card assets and the rules in this brief.
 
 ## General Description of Project and Tasks
 
