@@ -12,7 +12,7 @@ Each **SwapLoop Station** includes a touchscreen kiosk next to the battery swap 
 
 **ChargeRun** is that kiosk experience! The player steers an e-bike, collects energy packs, avoids pedestrians and potholes, and tries to reach the Battery Swap Cabinet before energy runs out. A successful run mirrors what SwapLoop asks of real riders: arrive at the station powered, not stranded.
 
-When a run ends with a **win**, the kiosk opens the **Charge Card** studio directly. On a **lose**, show a brief toast or overlay first (see [Win / lose](#win--lose)), then open the studio. The studio is a canvas editor where the player builds a personal score card (background photo, SwapLoop frame, score text, and signature). The card can be downloaded, shared, or sent to the station printer. Collecting Charge Cards is part of the pilot's community engagement: riders keep them as souvenirs and, in the story, can redeem them for promotional swap credits at participating stations. 🔋
+When a run ends with a **win**, the kiosk opens the **Charge Card** studio directly. On a **lose**, show a brief toast or overlay first (see [Win / lose](#win--lose)), then open the studio. The studio is a canvas editor where the player builds a personal score card (background photo, SwapLoop frame, score text, and signature). The card can be downloaded, shared, or sent to the station printer. Collecting Charge Cards is part of the pilot's community engagement: riders keep them as souvenirs, and can redeem them for promotional swap credits at participating stations. 🔋
 
 The application you build must run **independently**. It must **not** call a backend API, Station Service, or rider-facing REST endpoints. All behaviour is client-side, using the supplied card assets and the rules in this brief.
 
@@ -27,29 +27,26 @@ There are **exactly two screens**:
 
 High-level capabilities (details in [Requirements](#requirements)):
 
-- Fixed **1280×720** px kiosk shell (not responsive) - align the kiosk in the middle of the screen
+- Fixed **1280×720** px kiosk shell (not responsive) - align the kiosk in the center of the screen
 - ChargeRun grid game with per-run randomization, energy, packs, potholes, pedestrians, cabinet goal, and scoring
 - Charge Card studio: background (file input + drag-and-drop), dynamic text, signature, download, share, print
 - `localStorage` for display name
 - Use Shanghai timezone and Chinese date format when formatting any visible date/time on the Charge Card.
 - Installable / downloadable web app from Chrome. You only have to provide the minimum configuration to make the APP installable. Logos can be found under the `assets/logos` folder.
-- Prefer labelled buttons and visible focus for DOM controls. Color must not be the only way to distinguish win vs lose.
-- Load card assets from [`assets`](./assets).
 - Target the latest **Google Chrome** for assessment.
 - Use the provided `Inter` font wherever possible
 
 ### Vocabulary
 
-| Term                     | Meaning                                              |
-| ------------------------ | ---------------------------------------------------- |
-| **SwapLoop**             | Platform brand                                       |
-| **ChargeRun**            | Name of this kiosk mini-game                         |
-| **Charge Card**          | Personal achievement image created after a run       |
-| **SwapLoop Station**     | Service location the cabinet belongs to in the story |
-| **Battery Swap Cabinet** | Goal cell - reach it with energy remaining to win    |
-| **Energy pack**          | Collectible that restores energy                     |
-| **Pothole**              | One-time cell that costs energy and score points     |
-| **Pedestrian**           | Moving obstacle - collision loses the run            |
+| Term                     | Meaning                                           |
+| ------------------------ | ------------------------------------------------- |
+| **SwapLoop**             | Platform brand                                    |
+| **ChargeRun**            | Name of this kiosk mini-game                      |
+| **Charge Card**          | Personal achievement image created after a run    |
+| **Battery Swap Cabinet** | Goal cell - reach it with energy remaining to win |
+| **Energy pack**          | Collectible that restores energy                  |
+| **Pothole**              | One-time cell that costs energy and score points  |
+| **Pedestrian**           | Moving obstacle - collision loses the run         |
 
 ### Suggested time split
 
@@ -96,7 +93,7 @@ There is **no** Start button. Opening the Game screen always leaves the run in `
 
 #### Grid (fixed structure)
 
-1. Build a rectangular grid of **DOM cells** with **12 columns × 8 rows**.
+1. Build a rectangular grid of **DOM cells**.
 2. A hardcoded grid has been provided for you in the `layout.js` file.
 3. Distinguish cell types visually (by color, border, label or texture).
 
@@ -126,19 +123,18 @@ Every time a run is set up (app load, and every **Play again**), roll a **new** 
 | `D`          | Right |
 
 3. Ignore moves into `OBSTACLE` cells and off the grid.
-4. While the Game screen is active, call `preventDefault` on these movement keys (including in `READY`).
 
 #### Energy
 
-| Rule               | Value                                                                                                               |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| Starting energy    | `100`                                                                                                               |
-| Maximum energy     | `100`                                                                                                               |
-| Drain              | `15` energy points every **1 second** while `RUNNING`                                                               |
-| Normal energy pack | Entering its cell: `+25` energy (clamp to 100); remove the pack                                                     |
-| Boost energy pack  | Entering its cell: `+40` energy (clamp to 100); remove the pack                                                     |
-| Pothole            | Entering its cell the first time: `−15` energy (clamp to 0) and `−30` score; then remove the pothole from that cell |
-| Energy reaches `0` | Immediate `LOSE`                                                                                                    |
+| Rule               | Value                                                                                |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| Starting energy    | `100`                                                                                |
+| Maximum energy     | `100`                                                                                |
+| Drain              | `15` energy points every **1 second** while `RUNNING`                                |
+| Normal energy pack | Entering its cell: `+25` energy (clamp to 100); remove the pack                      |
+| Boost energy pack  | Entering its cell: `+40` energy (clamp to 100); remove the pack                      |
+| Pothole            | Entering its cell: `−25` energy (clamp to 0); then remove the pothole from that cell |
+| Energy reaches `0` | Immediate `LOSE`                                                                     |
 
 Energy does **not** drain in `READY`.
 
@@ -235,7 +231,7 @@ From bottom to top:
    - x: 0, y: 358
    - width: 960, height: 120
 
-Use fill color `#FFFFFF` for text. Signature stroke color `#FFFFFF`, line width `3`. Load and use the webfonts from [`assets/fonts/`](./assets/fonts/) for canvas text (via `document.fonts` / `FontFace` as needed so text is drawn only after the font is ready).
+Use fill color `#FFFFFF` for text. Signature stroke color `#FFFFFF`, line width `3`. Load and use the webfonts from [`assets/fonts/`](./assets/fonts/) for canvas text.
 
 The `x` and `y` are the coordinates of the top-left corner, unless specified otherwise.
 
@@ -280,7 +276,7 @@ You can find an example of the charge card in the `assets/charge-cards` folder.
 #### Download, Share, Print
 
 1. **Download:** (PNG) → file download named `chargerun-charge-card.png`.
-2. **Share:** use the Web Share API with a PNG `File`. Title/text: `SwapLoop ChargeRun`. If the function is missing or throws, show a visible fallback: tell the user to use Download or Print instead.
+2. **Share:** use the Web Share API with a PNG `File`. Title/text: `SwapLoop ChargeRun`.
 3. **Print:** open the browser print dialog so the Charge Card can be printed. Print the card image. Do not print the entire kiosk.
 4. Do not upload the image to a custom server.
 
