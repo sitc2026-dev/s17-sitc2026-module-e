@@ -10,7 +10,7 @@ SwapLoop is a fictional Shanghai community pilot exploring safer alternatives to
 
 Each **SwapLoop Station** includes a touchscreen kiosk next to the battery swap cabinet. While riders wait for a fresh battery pack or a monitored bay to open, the kiosk offers a short branded minigame.
 
-**ChargeRun** is that kiosk experience! The player steers an e-bike, collects energy packs, avoids pedestrians and oil hazards, and tries to reach the Battery Swap Cabinet before energy runs out. A successful run mirrors what SwapLoop asks of real riders: arrive at the station powered, not stranded.
+**ChargeRun** is that kiosk experience! The player steers an e-bike, collects energy packs, avoids pedestrians and potholes, and tries to reach the Battery Swap Cabinet before energy runs out. A successful run mirrors what SwapLoop asks of real riders: arrive at the station powered, not stranded.
 
 When the run ends (win or lose), the kiosk opens the **Charge Card** studio. A canvas editor where the player builds a personal score card (background photo, SwapLoop frame, score text, and signature). The card can be downloaded, shared, or sent to the station printer. Collecting Charge Cards is part of the pilot's community engagement: riders keep them as souvenirs and, in the story, can redeem them for promotional swap credits at participating stations. 🔋
 
@@ -28,7 +28,7 @@ There are **exactly two screens**:
 High-level capabilities (details in [Requirements](#requirements)):
 
 - Fixed **1280×720** px kiosk shell (not responsive) - align the kiosk in the middle of the screen
-- ChargeRun grid game with per-run randomization, energy, packs, hazards, pedestrians, cabinet goal, and scoring
+- ChargeRun grid game with per-run randomization, energy, packs, potholes, pedestrians, cabinet goal, and scoring
 - Charge Card studio: background (file input + drag-and-drop), dynamic text, signature, download, share, print
 - `localStorage` for display name
 - Use Shanghai timezone and Chinese date format when formatting any visible date/time on the Charge Card.
@@ -48,7 +48,7 @@ High-level capabilities (details in [Requirements](#requirements)):
 | **SwapLoop Station**     | Service location the cabinet belongs to in the story |
 | **Battery Swap Cabinet** | Goal cell - reach it with energy remaining to win    |
 | **Energy pack**          | Collectible that restores energy                     |
-| **Oil hazard**           | One-time energy penalty cell                         |
+| **Pothole**              | One-time cell that costs energy and score points     |
 | **Pedestrian**           | Moving obstacle - collision loses the run            |
 
 ### Suggested time split
@@ -81,7 +81,7 @@ Build the game described here.
 
 #### Story and goal
 
-The player controls an e-bike on a small city grid. Energy drains over time. Collect energy packs to stay powered. Avoid pedestrians and oil hazards. Reach the **Battery Swap Cabinet** with energy remaining to win.
+The player controls an e-bike on a small city grid. Energy drains over time. Collect energy packs to stay powered. Avoid pedestrians and potholes. Reach the **Battery Swap Cabinet** with energy remaining to win.
 
 #### Run states
 
@@ -103,7 +103,7 @@ There is **no** Start button. Opening the Game screen always leaves the run in `
 Every time a run is set up (app load, and every **Play again**), roll a **new** configuration:
 
 1. **Energy packs (4):** randomly choose **4 distinct `ROAD` cells** that are not `SPAWN` and not `CABINET`. Place one energy pack on each. Among those four, randomly mark **exactly 1** as a **boost pack** (`+40` energy instead of `+25`).
-2. **Oil hazards (2):** randomly choose **2 distinct `ROAD` cells** that are not `SPAWN`, not `CABINET`, and not occupied by an energy pack. Place one oil hazard on each.
+2. **Potholes (2):** randomly choose **2 distinct `ROAD` cells** that are not `SPAWN`, not `CABINET`, and not occupied by an energy pack. Place one pothole on each.
 3. **Pedestrian routes (2):** you are provided with hard-coded list of a few pedestrian paths in the `layout.js` file (each path is an ordered list of `ROAD` coordinates). For each run, randomly assign **2 different** paths from that catalogue to the two pedestrians. Randomly choose each pedestrian’s starting index on their path and whether they begin moving forward or backward along the path.
 4. After rolling, render the grid and place the player on `SPAWN` in `READY`.
 
@@ -135,7 +135,7 @@ Every time a run is set up (app load, and every **Play again**), roll a **new** 
 | Drain              | `5` energy points every **1 second** while `RUNNING`                                               |
 | Normal energy pack | Entering its cell: `+25` energy (clamp to 100); remove the pack                                    |
 | Boost energy pack  | Entering its cell: `+40` energy (clamp to 100); remove the pack                                    |
-| Oil hazard         | Entering its cell the first time: `−15` energy (clamp to 0); then remove the hazard from that cell |
+| Pothole            | Entering its cell the first time: `−15` energy (clamp to 0) and `−30` score; then remove the pothole from that cell |
 | Energy reaches `0` | Immediate `LOSE`                                                                                   |
 
 Energy does **not** drain in `READY`.
@@ -175,7 +175,7 @@ score =
   + (remainingEnergy * 2)
   + timeBonus
   - collisionPenalty
-  - hazardPenalty
+  - potholePenalty
 ```
 
 | Term                   | Definition                                                                                                   |
@@ -185,9 +185,9 @@ score =
 | `remainingEnergy`      | Energy when the run ends                                                                                     |
 | `timeBonus`            | On `WIN` only: `max(0, 60 - elapsedWholeSeconds) * 5`. On `LOSE`: `0`. Timer starts when entering `RUNNING`. |
 | `collisionPenalty`     | `200` if the run ended by pedestrian collision; otherwise `0`                                                |
-| `hazardPenalty`        | `30` per oil hazard triggered during the run                                                                 |
+| `potholePenalty`       | `30` per pothole triggered during the run                                                                    |
 
-Update the live score when packs/hazards change; finalise on run end.
+Update the live score when packs or potholes change; finalise on run end.
 
 #### `localStorage`
 
@@ -278,7 +278,7 @@ You can find an example of the charge card in the `assets/charge-cards` folder.
 3. **Print:** open the browser print dialog so the Charge Card can be printed. Print the card image. Do not print the entire kiosk.
 4. Do not upload the image to a custom server.
 
-Game visuals (player, pedestrians, packs, hazards, cabinet, obstacles) are built by the competitor with DOM/CSS or simple self-added images.
+Game visuals (player, pedestrians, packs, potholes, cabinet, obstacles) are built by the competitor with DOM/CSS or simple self-added images.
 
 ## Assessment
 
