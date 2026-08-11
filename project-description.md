@@ -12,7 +12,7 @@ Each **SwapLoop Station** includes a touchscreen kiosk next to the battery swap 
 
 **ChargeRun** is that kiosk experience! The player steers an e-bike, collects energy packs, avoids pedestrians and potholes, and tries to reach the Battery Swap Cabinet before energy runs out. A successful run mirrors what SwapLoop asks of real riders: arrive at the station powered, not stranded.
 
-When the run ends (win or lose), the kiosk opens the **Charge Card** studio. A canvas editor where the player builds a personal score card (background photo, SwapLoop frame, score text, and signature). The card can be downloaded, shared, or sent to the station printer. Collecting Charge Cards is part of the pilot's community engagement: riders keep them as souvenirs and, in the story, can redeem them for promotional swap credits at participating stations. 🔋
+When a run ends with a **win**, the kiosk opens the **Charge Card** studio directly. On a **lose**, show a brief toast or overlay first (see [Win / lose](#win--lose)), then open the studio. The studio is a canvas editor where the player builds a personal score card (background photo, SwapLoop frame, score text, and signature). The card can be downloaded, shared, or sent to the station printer. Collecting Charge Cards is part of the pilot's community engagement: riders keep them as souvenirs and, in the story, can redeem them for promotional swap credits at participating stations. 🔋
 
 The application you build must run **independently**. It must **not** call a backend API, Station Service, or rider-facing REST endpoints. All behaviour is client-side, using the supplied card assets and the rules in this brief.
 
@@ -156,7 +156,11 @@ Energy does **not** drain in `READY`.
 | `WIN`   | Player enters the `CABINET` cell with energy greater than 0     |
 | `LOSE`  | Energy reaches 0, **or** player shares a cell with a pedestrian |
 
-On end: navigate to the **Charge Card studio**
+**On `WIN`:** navigate to the **Charge Card studio** immediately.
+
+**On `LOSE`:** the run **pauses** and the game shows a **toast or overlay** for a few seconds that explains **why** the run ended. Energy drain, pedestrian movement, and player input must be frozen while it is visible. Use a message that matches the cause.
+
+After the toast or overlay dismisses (or its timer elapses), navigate to the **Charge Card studio**.
 
 #### HUD
 
@@ -198,7 +202,7 @@ Update the live score when packs or potholes change; finalise on run end.
 
 ### Charge Card studio
 
-Opened when the game ends. The Charge Card is a **personal score certificate** for that run: a single landscape image that combines a photo background, SwapLoop branding, the player’s name and score, and a handwritten signature. It is meant to be kept (download), sent to someone (share), or printed at the kiosk.
+Opened when the game ends - immediately on `WIN`, or after the lose toast/overlay on `LOSE`. The Charge Card is a **personal score certificate** for that run: a single landscape image that combines a photo background, SwapLoop branding, the player’s name and score, and a handwritten signature. It is meant to be kept (download), sent to someone (share), or printed at the kiosk.
 
 Compose the card on an HTML `<canvas>` inside the kiosk.
 
