@@ -44,12 +44,12 @@ export default function GameScreen({ onRunEnd }) {
   const [state, setState] = useState("READY");
   const [player, setPlayer] = useState(run.player);
   const [packs, setPacks] = useState(run.packs);
-  const [oils, setOils] = useState(run.oils);
+  const [potholes, setPotholes] = useState(run.potholes);
   const [pedestrians, setPedestrians] = useState(run.pedestrians);
   const [energy, setEnergy] = useState(100);
   const [normalPacksCollected, setNormalPacksCollected] = useState(0);
   const [boostPackCollected, setBoostPackCollected] = useState(0);
-  const [hazardsTriggered, setHazardsTriggered] = useState(0);
+  const [potholesTriggered, setPotholesTriggered] = useState(0);
   const [elapsedWholeSeconds, setElapsedWholeSeconds] = useState(0);
 
   const endedRef = useRef(false);
@@ -59,24 +59,24 @@ export default function GameScreen({ onRunEnd }) {
   const stateRef = useRef(state);
   const playerRef = useRef(player);
   const packsRef = useRef(packs);
-  const oilsRef = useRef(oils);
+  const potholesRef = useRef(potholes);
   const pedestriansRef = useRef(pedestrians);
   const energyRef = useRef(energy);
   const normalRef = useRef(normalPacksCollected);
   const boostRef = useRef(boostPackCollected);
-  const hazardsRef = useRef(hazardsTriggered);
+  const potholesTriggeredRef = useRef(potholesTriggered);
   const elapsedRef = useRef(elapsedWholeSeconds);
   const runningStartedAtRef = useRef(null);
 
   stateRef.current = state;
   playerRef.current = player;
   packsRef.current = packs;
-  oilsRef.current = oils;
+  potholesRef.current = potholes;
   pedestriansRef.current = pedestrians;
   energyRef.current = energy;
   normalRef.current = normalPacksCollected;
   boostRef.current = boostPackCollected;
-  hazardsRef.current = hazardsTriggered;
+  potholesTriggeredRef.current = potholesTriggered;
   elapsedRef.current = elapsedWholeSeconds;
 
   const score = useMemo(
@@ -85,9 +85,9 @@ export default function GameScreen({ onRunEnd }) {
         normalPacksCollected,
         boostPackCollected,
         remainingEnergy: energy,
-        hazardPenalty: hazardsTriggered * 30,
+        potholePenalty: potholesTriggered * 30,
       }),
-    [normalPacksCollected, boostPackCollected, energy, hazardsTriggered],
+    [normalPacksCollected, boostPackCollected, energy, potholesTriggered]
   );
 
   const finishRun = useCallback((outcome, collisionPenalty, snapshot) => {
@@ -102,23 +102,31 @@ export default function GameScreen({ onRunEnd }) {
       elapsedWholeSeconds: elapsed,
       outcome,
       collisionPenalty,
-      hazardPenalty: snapshot.hazardsTriggered * 30,
+      potholePenalty: snapshot.potholesTriggered * 30,
     });
 
     onRunEndRef.current({ outcome, score: finalScore });
   }, []);
 
   const applyCellEffects = useCallback(
-    (nextPlayer, nextEnergy, nextPacks, nextOils, nextNormal, nextBoost, nextHazards) => {
+    (
+      nextPlayer,
+      nextEnergy,
+      nextPacks,
+      nextPotholes,
+      nextNormal,
+      nextBoost,
+      nextPotholesTriggered
+    ) => {
       let energyValue = nextEnergy;
       let packsValue = nextPacks;
-      let oilsValue = nextOils;
+      let potholesValue = nextPotholes;
       let normalValue = nextNormal;
       let boostValue = nextBoost;
-      let hazardsValue = nextHazards;
+      let potholesTriggeredValue = nextPotholesTriggered;
 
       const pack = packsValue.find(
-        (p) => p.x === nextPlayer.x && p.y === nextPlayer.y,
+        (p) => p.x === nextPlayer.x && p.y === nextPlayer.y
       );
       if (pack) {
         if (pack.kind === "boost") {
@@ -129,29 +137,31 @@ export default function GameScreen({ onRunEnd }) {
           normalValue += 1;
         }
         packsValue = packsValue.filter(
-          (p) => !(p.x === pack.x && p.y === pack.y),
+          (p) => !(p.x === pack.x && p.y === pack.y)
         );
       }
 
-      const oil = oilsValue.find(
-        (o) => o.x === nextPlayer.x && o.y === nextPlayer.y,
+      const pothole = potholesValue.find(
+        (hole) => hole.x === nextPlayer.x && hole.y === nextPlayer.y
       );
-      if (oil) {
+      if (pothole) {
         energyValue = clampEnergy(energyValue - 15);
-        hazardsValue += 1;
-        oilsValue = oilsValue.filter((o) => !(o.x === oil.x && o.y === oil.y));
+        potholesTriggeredValue += 1;
+        potholesValue = potholesValue.filter(
+          (hole) => !(hole.x === pothole.x && hole.y === pothole.y)
+        );
       }
 
       return {
         energyValue,
         packsValue,
-        oilsValue,
+        potholesValue,
         normalValue,
         boostValue,
-        hazardsValue,
+        potholesTriggeredValue,
       };
     },
-    [],
+    []
   );
 
   const checkPedestrianCollision = useCallback((playerPos, peds) => {
@@ -190,34 +200,34 @@ export default function GameScreen({ onRunEnd }) {
         nextPlayer,
         energyRef.current,
         packsRef.current,
-        oilsRef.current,
+        potholesRef.current,
         normalRef.current,
         boostRef.current,
-        hazardsRef.current,
+        potholesTriggeredRef.current
       );
 
       setPlayer(nextPlayer);
       setPacks(effects.packsValue);
-      setOils(effects.oilsValue);
+      setPotholes(effects.potholesValue);
       setEnergy(effects.energyValue);
       setNormalPacksCollected(effects.normalValue);
       setBoostPackCollected(effects.boostValue);
-      setHazardsTriggered(effects.hazardsValue);
+      setPotholesTriggered(effects.potholesTriggeredValue);
 
       playerRef.current = nextPlayer;
       packsRef.current = effects.packsValue;
-      oilsRef.current = effects.oilsValue;
+      potholesRef.current = effects.potholesValue;
       energyRef.current = effects.energyValue;
       normalRef.current = effects.normalValue;
       boostRef.current = effects.boostValue;
-      hazardsRef.current = effects.hazardsValue;
+      potholesTriggeredRef.current = effects.potholesTriggeredValue;
       stateRef.current = nextState;
 
       const snapshot = {
         energy: effects.energyValue,
         normalPacksCollected: effects.normalValue,
         boostPackCollected: effects.boostValue,
-        hazardsTriggered: effects.hazardsValue,
+        potholesTriggered: effects.potholesTriggeredValue,
         elapsedWholeSeconds: elapsedRef.current,
       };
 
@@ -241,7 +251,7 @@ export default function GameScreen({ onRunEnd }) {
         finishRun("WIN", 0, { ...snapshot, elapsedWholeSeconds: elapsed });
       }
     },
-    [applyCellEffects, checkPedestrianCollision, finishRun],
+    [applyCellEffects, checkPedestrianCollision, finishRun]
   );
 
   useEffect(() => {
@@ -264,7 +274,7 @@ export default function GameScreen({ onRunEnd }) {
     const energyTimer = window.setInterval(() => {
       if (endedRef.current || stateRef.current !== "RUNNING") return;
 
-      const nextEnergy = clampEnergy(energyRef.current - 5);
+      const nextEnergy = clampEnergy(energyRef.current - 15);
       const nextElapsed = elapsedRef.current + 1;
       setEnergy(nextEnergy);
       setElapsedWholeSeconds(nextElapsed);
@@ -276,7 +286,7 @@ export default function GameScreen({ onRunEnd }) {
           energy: nextEnergy,
           normalPacksCollected: normalRef.current,
           boostPackCollected: boostRef.current,
-          hazardsTriggered: hazardsRef.current,
+          potholesTriggered: potholesTriggeredRef.current,
           elapsedWholeSeconds: nextElapsed,
         });
       }
@@ -294,7 +304,7 @@ export default function GameScreen({ onRunEnd }) {
           energy: energyRef.current,
           normalPacksCollected: normalRef.current,
           boostPackCollected: boostRef.current,
-          hazardsTriggered: hazardsRef.current,
+          potholesTriggered: potholesTriggeredRef.current,
           elapsedWholeSeconds: elapsedRef.current,
         });
       }
@@ -312,9 +322,9 @@ export default function GameScreen({ onRunEnd }) {
     return map;
   }, [packs]);
 
-  const oilSet = useMemo(
-    () => new Set(oils.map((o) => cellKey(o.x, o.y))),
-    [oils],
+  const potholeSet = useMemo(
+    () => new Set(potholes.map((hole) => cellKey(hole.x, hole.y))),
+    [potholes]
   );
 
   const pedMap = useMemo(() => {
@@ -341,9 +351,6 @@ export default function GameScreen({ onRunEnd }) {
           <div>
             Score: <span className="font-bold">{score}</span>
           </div>
-          <div>
-            State: <span className="font-bold">{state}</span>
-          </div>
         </div>
       </header>
 
@@ -369,7 +376,7 @@ export default function GameScreen({ onRunEnd }) {
                 const type = BASE_LAYOUT[y][x];
                 const key = cellKey(x, y);
                 const pack = packMap.get(key);
-                const hasOil = oilSet.has(key);
+                const hasPothole = potholeSet.has(key);
                 const pedsHere = pedMap.get(key) ?? [];
                 const isPlayer = player.x === x && player.y === y;
 
@@ -382,7 +389,9 @@ export default function GameScreen({ onRunEnd }) {
                   tone = "bg-violet-200 border-violet-700 text-violet-950";
                 }
 
-                if (hasOil) tone = "bg-amber-200 border-amber-700 text-amber-950";
+                if (hasPothole) {
+                  tone = "bg-amber-200 border-amber-700 text-amber-950";
+                }
                 if (pack?.kind === "normal") {
                   tone = "bg-emerald-200 border-emerald-700 text-emerald-950";
                 }
@@ -418,10 +427,10 @@ export default function GameScreen({ onRunEnd }) {
                         {pack.kind === "boost" ? "BOOST" : "PACK"}
                       </span>
                     )}
-                    {hasOil && <span className="font-semibold">OIL</span>}
+                    {hasPothole && <span className="font-semibold">HOLE</span>}
                   </div>
                 );
-              }),
+              })
             )}
           </div>
         </div>
@@ -447,7 +456,7 @@ export default function GameScreen({ onRunEnd }) {
             </li>
             <li className="flex items-center gap-2">
               <span className="inline-block h-3 w-3 border border-amber-700 bg-amber-200" />
-              OIL — −15 energy
+              HOLE — −15 energy, −30 score
             </li>
             <li className="flex items-center gap-2">
               <span className="inline-block h-3 w-3 border border-violet-700 bg-violet-200" />

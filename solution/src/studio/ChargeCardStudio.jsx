@@ -87,11 +87,13 @@ export default function ChargeCardStudio({
       outcome === "WIN" ? "SAFE ARRIVAL / 平安抵达" : "RUN ENDED / 比赛结束";
     ctx.font = "600 32px Inter";
     ctx.textAlign = "center";
-    ctx.fillText(outcomeText, CARD_WIDTH / 2, 127);
+    ctx.fillStyle = outcome === "WIN" ? "#91FF89" : "#FF8989";
+    ctx.fillText(outcomeText, CARD_WIDTH / 2, 135);
 
     ctx.font = "700 128px Inter";
+    ctx.fillStyle = "#FFFFFF";
     ctx.textAlign = "center";
-    ctx.fillText(String(score), CARD_WIDTH / 2, 171);
+    ctx.fillText(String(score), CARD_WIDTH / 2, 185);
 
     ctx.font = "400 16px Inter";
     ctx.textAlign = "left";

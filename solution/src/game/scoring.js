@@ -5,7 +5,7 @@ export function computeScore({
   elapsedWholeSeconds,
   outcome,
   collisionPenalty,
-  hazardPenalty,
+  potholePenalty,
 }) {
   const timeBonus =
     outcome === "WIN" ? Math.max(0, 60 - elapsedWholeSeconds) * 5 : 0;
@@ -16,7 +16,7 @@ export function computeScore({
     remainingEnergy * 2 +
     timeBonus -
     collisionPenalty -
-    hazardPenalty;
+    potholePenalty;
 
   return Math.max(0, score);
 }
@@ -25,7 +25,7 @@ export function liveScore({
   normalPacksCollected,
   boostPackCollected,
   remainingEnergy,
-  hazardPenalty,
+  potholePenalty,
 }) {
   return computeScore({
     normalPacksCollected,
@@ -34,6 +34,6 @@ export function liveScore({
     elapsedWholeSeconds: 0,
     outcome: "LOSE",
     collisionPenalty: 0,
-    hazardPenalty,
+    potholePenalty,
   });
 }

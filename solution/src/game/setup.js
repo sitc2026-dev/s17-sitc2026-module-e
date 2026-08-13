@@ -26,9 +26,14 @@ export function createRunConfig() {
   }));
 
   const occupied = new Set(packs.map((p) => cellKey(p.x, p.y)));
-  const freeForOil = roadCells.filter((c) => !occupied.has(cellKey(c.x, c.y)));
-  const oilCells = pickDistinct(freeForOil, 2);
-  const oils = oilCells.map((cell) => ({ x: cell.x, y: cell.y }));
+  const freeForPotholes = roadCells.filter(
+    (c) => !occupied.has(cellKey(c.x, c.y)),
+  );
+  const potholeCells = pickDistinct(freeForPotholes, 2);
+  const potholes = potholeCells.map((cell) => ({
+    x: cell.x,
+    y: cell.y,
+  }));
 
   const pathIndices = pickDistinct(
     PEDESTRIAN_PATH_CATALOGUE.map((_, i) => i),
@@ -53,7 +58,7 @@ export function createRunConfig() {
 
   return {
     packs,
-    oils,
+    potholes,
     pedestrians,
     player: { x: spawn.x, y: spawn.y },
   };
