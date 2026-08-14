@@ -1,1 +1,694 @@
-{}
+{
+  "totalMark": 16,
+  "wsosSections": {
+    "1": "Work organization and self-management",
+    "2": "Communication and interpersonal skills",
+    "3": "Design Implementation",
+    "4": "Front-End Development"
+  },
+  "subCriterions": [
+    {
+      "name": "ChargeRun grid and run setup",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "Game board is a DOM grid matching assets/layout.js (12×8 with SPAWN, CABINET, ROAD, and OBSTACLE)",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Inspect the Game screen. The board is built from DOM cells (not a single bitmap). Layout matches BASE_LAYOUT in assets/layout.js: 8 rows × 12 columns, SPAWN in the top-left road area, CABINET in the bottom-right road area, and OBSTACLE cells blocking off-road space.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "ROAD, OBSTACLE, SPAWN, and CABINET cells are visually distinguished",
+          "maxMark": 0.15,
+          "wsosSection": 3,
+          "extraDescription": "Test: Without reading code, tell the four cell types apart by colour, border, texture, or label.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Each run places four energy packs on distinct ROAD cells that are not SPAWN or CABINET",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: On load, count four energy-pack objects. None sit on SPAWN or CABINET. Reload or Play again and confirm they still land only on ROAD cells.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Exactly one of the four energy packs is a boost pack",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Identify the four packs. Exactly one is visually distinct as the boost pack. Confirm by collecting it later (+40 energy) if the styling is ambiguous.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Each run places two potholes on distinct ROAD cells not occupied by energy packs",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Count two potholes. They are not on SPAWN, CABINET, or a pack cell.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Two pedestrians are assigned two different paths from the layout.js catalogue",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: After the first move, watch both pedestrians. They patrol different routes from PEDESTRIAN_PATH_CATALOGUE in assets/layout.js (not the same path, and not arbitrary off-catalogue cells).",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "The player starts on SPAWN and the run is in READY",
+          "maxMark": 0.1,
+          "wsosSection": 4,
+          "extraDescription": "Test: On Game load, the e-bike is on the SPAWN cell. Energy is not draining and pedestrians are not moving until the first valid movement key.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Play again sets up a new randomised run in READY",
+          "maxMark": 0.25,
+          "wsosSection": 4,
+          "extraDescription": "Test: Note pack and pothole cells. Finish a run, open the studio, click Play again. The Game screen returns without a full browser reload, the run is READY (frozen until a move key), and at least some pickups/paths differ. If a roll matches, Play again once more.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Movement, energy, packs, and potholes",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "Arrow keys and WASD each move the player one cell",
+          "maxMark": 0.25,
+          "wsosSection": 4,
+          "extraDescription": "Test: From SPAWN, use ArrowUp/Down/Left/Right and W/A/S/D. Each required key moves exactly one walkable cell per press (no hold-to-repeat requirement).",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Moves into OBSTACLE cells and off the grid are ignored",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: From a cell next to an OBSTACLE, press toward the obstacle — the player stays put. At a grid edge, press off the board — the player stays put.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "The first valid movement key enters RUNNING and moves that cell",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: There is no Start button. Pressing a movement key into an OBSTACLE while READY does not start the run. Pressing a valid walkable move starts RUNNING and applies that one-cell move. There is no separate start menu.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Energy starts at 100 and drains 15 points every second while RUNNING",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: HUD energy is 100 in READY. After the first move, without collecting packs, energy drops by 15 about every 1 second (100 → 85 → 70…). Maximum remains 100.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Energy does not drain while the run is READY",
+          "maxMark": 0.1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Leave the Game screen in READY for at least 3 seconds without pressing a move key. Energy stays at 100.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "A normal energy pack adds 25 energy (clamped to 100) and is removed",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Drain below 75, then enter a normal (+25) pack cell. Energy increases by 25 and does not exceed 100. The pack disappears from that cell.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "The boost pack adds 40 energy (clamped to 100) and is removed",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Drain below 60, then enter the boost pack cell. Energy increases by 40 and does not exceed 100. The boost pack disappears.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "A pothole subtracts 25 energy (clamped to 0) and is then removed",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Enter a pothole cell. Energy decreases by 25 (not below 0). After the hit, the pothole is gone from that cell so a later visit does not apply the penalty again.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Energy reaching 0 causes an immediate LOSE",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Stay on a safe cell after starting and wait until energy hits 0, or walk into enough potholes. The run ends as LOSE as soon as energy is 0.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pedestrians, win/lose, HUD, and scoring",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "Each pedestrian steps one cell about every 600 ms while RUNNING",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Start the run and watch one pedestrian. It advances one path cell roughly twice per 1.2 seconds (~600 ms), not only when the player moves.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Pedestrians stay frozen while the run is READY",
+          "maxMark": 0.1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Wait several seconds on the Game screen before any move key. Both pedestrians stay on their starting cells.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Pedestrians reverse direction at both ends of their path (ping-pong)",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Watch a pedestrian reach the last cell of its route. It turns back along the same cells instead of disappearing or leaving the path.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Sharing a cell with a pedestrian causes an immediate LOSE",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Move onto a pedestrian’s cell (or wait until a pedestrian walks onto the player). The run ends as LOSE immediately.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Entering the CABINET cell with energy greater than 0 is a WIN and opens the studio immediately",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Reach the Battery Swap Cabinet with energy remaining. The Charge Card studio opens at once (no lose toast).",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "On LOSE, a toast or overlay explains whether energy ran out or a pedestrian collision occurred",
+          "maxMark": 0.25,
+          "wsosSection": 2,
+          "extraDescription": "Test: Lose once by energy 0 and once by pedestrian collision (separate runs). Each time a toast/overlay appears before the studio, and the message matches that cause.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "While the lose overlay is visible, energy drain, pedestrian movement, and player input are frozen",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Trigger LOSE. While the toast/overlay is showing, energy does not keep falling, pedestrians do not keep stepping, and movement keys do not move the player.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "After the lose overlay dismisses or its timer elapses, the Charge Card studio opens",
+          "maxMark": 0.1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Complete a LOSE. When the overlay is dismissed or times out, the studio screen is shown inside the kiosk without a full browser reload.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "The HUD continuously shows current energy and current score",
+          "maxMark": 0.1,
+          "wsosSection": 4,
+          "extraDescription": "Test: On the Game screen, energy and score remain visible during READY and RUNNING and update as energy and pickups change.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "READY shows the hint “Press Arrow keys or WASD to start”",
+          "maxMark": 0.1,
+          "wsosSection": 4,
+          "extraDescription": "Test: On Game load (READY), that exact hint is visible. It is not required after the run has entered RUNNING.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Final score follows the specified formula and is clamped at a minimum of 0",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test (integer arithmetic): live score updates when a pack is collected or a pothole is hit. Spot-check: each normal pack +100, boost pack +150, remaining energy × 2, each pothole −30, pedestrian-collision LOSE −200, time bonus only on WIN as max(0, 60 − elapsed whole seconds) × 5 (timer starts at RUNNING). LOSE time bonus is 0. Final score is never negative. Compare the studio score to this result.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Charge Card composition",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "The Charge Card canvas is 960×540 pixels",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: In DevTools, the studio <canvas> width/height attributes are 960 and 540. A downloaded PNG is also 960×540.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "The card preview uses a 16px border radius",
+          "maxMark": 0.1,
+          "wsosSection": 3,
+          "extraDescription": "Test: The on-screen card preview has 16px rounded corners (CSS or equivalent).",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "With no photo uploaded, the card background is a blue-green gradient",
+          "maxMark": 0.15,
+          "wsosSection": 3,
+          "extraDescription": "Test: Open the studio without uploading a background. The card shows a blue-green gradient behind the overlay, not a blank or solid unrelated fill.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "The supplied charge-card overlay PNG is drawn at full card size",
+          "maxMark": 0.25,
+          "wsosSection": 4,
+          "extraDescription": "Test: The SwapLoop frame/logo from assets/charge-cards/charge-card-overlay.png covers the 960×540 card. The competitor has not redrawn that frame by hand.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Display name is drawn at 28px regular, right-aligned (right edge x=927, y=55)",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Enter a name and confirm it appears in the top-right of the card, 28px regular, right-aligned so the right edge sits at x=927, y=55 (top-left of the text box is not x=927). White fill.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "A WIN card shows exactly “SAFE ARRIVAL / 平安抵达” in #91FF89",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Win a run. Outcome text is exactly SAFE ARRIVAL / 平安抵达, 32px semibold, horizontally centered at y=135, colour #91FF89.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "A LOSE card shows exactly “RUN ENDED / 比赛结束” in #FF8989",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Lose a run. Outcome text is exactly RUN ENDED / 比赛结束, 32px semibold, horizontally centered at y=135, colour #FF8989.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "The numeric final score is drawn 128px bold and centered at y=185",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: The score on the card matches the finished run, uses 128px bold Inter, is horizontally centered, and sits at y=185 with white fill.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "The card date uses Asia/Shanghai (zh-CN) formatting like 2026/8/7 10:46:42",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Date text is at x=50, y=500, 16px regular. Format is year/month/day hour:minute:second in timezone Asia/Shanghai (month/day may be unpadded). It must not be a different timezone or a locale that inserts extra characters instead of this pattern.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Canvas text uses the provided Inter webfonts from assets/fonts",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Card text is Inter (not a generic fallback like Times/Arial as the intended face). Fonts are loaded from assets/fonts/ (or the copied Inter files from that folder).",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Card text fill is #FFFFFF and signature strokes are #FFFFFF at line width 3",
+          "maxMark": 0.1,
+          "wsosSection": 3,
+          "extraDescription": "Test: Name, score, and date are white. Draw a signature — stroke is white and clearly a ~3px line, not a hairline or thick marker.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Charge Card studio controls",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "Empty or whitespace-only display name blocks Download, Share, and Print with a visible field error",
+          "maxMark": 0.15,
+          "wsosSection": 2,
+          "extraDescription": "Test: Clear the name (or enter only spaces). Click Download, Share, and Print. None of the three actions proceed, and a visible error is shown on the name field.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Display name is prefilled from localStorage when a saved name exists",
+          "maxMark": 0.1,
+          "wsosSection": 4,
+          "extraDescription": "Test: After a name has been stored, start a new run into the studio (or reload and finish a run). The name input shows the saved value.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "The trimmed display name is saved when Download, Share, or Print is successfully initiated",
+          "maxMark": 0.1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Enter “  Ada  ”, sign, and Download (or Share/Print). localStorage stores the trimmed name (e.g. Ada). Reload/new studio visit prefills Ada, not the padded original.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "A visible file input (or button that opens one) accepts JPEG, PNG, and WebP backgrounds",
+          "maxMark": 0.1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Use the upload control with a valid 960×540 JPEG, PNG, and WebP from assets/charge-cards/backgrounds (or equivalent). Each accepted image is drawn as the card background.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Dropping a file onto the kiosk uses the same validation and apply pipeline as the file input",
+          "maxMark": 0.25,
+          "wsosSection": 4,
+          "extraDescription": "Test: On the studio screen, drag a valid 960×540 image onto the kiosk (not only onto a tiny drop target outside it). The background is applied. Dragging a rejected file shows the same error as the file input.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Unsupported MIME types are rejected with a visible message",
+          "maxMark": 0.15,
+          "wsosSection": 2,
+          "extraDescription": "Test: Upload assets/charge-cards/backgrounds/background-incorrect-format.pdf (or another non-jpeg/png/webp file). A visible error appears and the card background does not change.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Files larger than 5 MB are rejected with a visible message",
+          "maxMark": 0.15,
+          "wsosSection": 2,
+          "extraDescription": "Test: Upload assets/charge-cards/backgrounds/background-incorrect-file-size-too-big.png. A visible error appears and the background is not applied.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Background images that are not 960×540 pixels are rejected with a visible message",
+          "maxMark": 0.15,
+          "wsosSection": 2,
+          "extraDescription": "Test: Upload assets/charge-cards/backgrounds/background-incorrect-size.jpg (or any image whose pixel size is not 960×540). A visible error appears and the background is not applied.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Reset background restores the default gradient",
+          "maxMark": 0.1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Apply a valid photo, then click Reset background. The photo is gone and the blue-green gradient returns. Overlay and text remain.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Signature strokes are clipped to the signature box and Clear signature wipes them",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: Draw with the mouse on the card canvas. Ink appears only inside the box (x:0, y:358, 960×120) — not over the score. Click Clear signature; all strokes disappear. Touch support is not required.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "An empty signature blocks Download, Share, and Print with “Please sign inside the box”",
+          "maxMark": 0.25,
+          "wsosSection": 2,
+          "extraDescription": "Test: Enter a name, leave the signature empty (or clear it). Click Download, Share, and Print. None proceed. The visible message is exactly: Please sign inside the box.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Download saves a 960×540 PNG named chargerun-charge-card.png",
+          "maxMark": 0.25,
+          "wsosSection": 4,
+          "extraDescription": "Test: With name and signature present, Download. The file is named chargerun-charge-card.png, is PNG, and is 960×540. The image is not uploaded to a custom server.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Share uses the Web Share API with a PNG file and title/text “SwapLoop ChargeRun”",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: With name and signature present, click Share (Chrome, secure context / localhost). The Web Share sheet appears with a PNG file; title/text is SwapLoop ChargeRun. Canceling the sheet is fine. Fail if Share does nothing or only copies a link without a file.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Print opens the browser print dialog for the card image, not the whole kiosk",
+          "maxMark": 0.15,
+          "wsosSection": 4,
+          "extraDescription": "Test: With name and signature present, click Print. The print preview shows the Charge Card image. It must not print the entire kiosk chrome, HUD, or studio controls as the main page.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Kiosk shell, navigation, and installability",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "The kiosk stage is exactly 1280×720 pixels and centred on the page",
+          "maxMark": 0.5,
+          "wsosSection": 1,
+          "extraDescription": "Test: The playable stage is 1280px by 720px (not responsive). In a larger window it is centred. Game and studio both render inside this stage.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Only Game and Charge Card studio exist, as SPA screens inside the kiosk",
+          "maxMark": 0.1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Switching Game ↔ studio does not fully reload the browser document. No extra primary screens (no start menu, settings page, or third kiosk view).",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "App load opens the Game screen directly",
+          "maxMark": 0.1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Open or reload the app. The first view is ChargeRun (READY), not a menu and not the studio.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "The app is installable in Chrome using the provided logos",
+          "maxMark": 0.25,
+          "wsosSection": 1,
+          "extraDescription": "Test: In latest Chrome on localhost/https, the app meets minimum installability (web app manifest with name, display mode such as standalone, and icons). Icons come from assets/logos (logo-square-512.png / .svg). Chrome offers Install app / install icon. A service worker is not required unless Chrome needs it for the install affordance.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "The kiosk UI uses the provided Inter font",
+          "maxMark": 0.15,
+          "wsosSection": 3,
+          "extraDescription": "Test: HUD, legend, and studio controls use Inter from assets/fonts/ wherever practical (not an unrelated default UI font as the primary face).",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Visual design and code quality",
+      "aspects": [
+        {
+          "type": "judgement",
+          "description": "Code organization and maintainability",
+          "maxMark": 1,
+          "wsosSection": 1,
+          "judgementScoreDescription": [
+            "Code is unstructured, heavily duplicated, or dumped into one file; game rules, canvas drawing, and UI are hard to separate",
+            "Basic file or module split exists, but naming is inconsistent and game state, rendering, and studio logic are still tangled",
+            "Clear structure with meaningful names and a sensible split between layout/setup, game loop, scoring, and Charge Card studio",
+            "Excellent modular structure, consistent patterns, and code that is easy to follow, extend, and re-test without hunting for hidden side effects"
+          ]
+        },
+        {
+          "type": "measurement",
+          "description": "A legend (or equivalent) identifies the main game objects",
+          "maxMark": 0.15,
+          "wsosSection": 3,
+          "extraDescription": "Test: The Game screen includes a visible legend or equally clear labels so the player, packs, boost pack, potholes, pedestrians, and cabinet can be identified without guessing.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Player, packs, boost pack, potholes, pedestrians, cabinet, and obstacles are distinguishable by shape or styling, not colour alone",
+          "maxMark": 0.25,
+          "wsosSection": 3,
+          "extraDescription": "Test: Each listed object has a distinct shape, icon, texture, or structure. Recolouring them in your mind (or squinting) would still let you tell them apart. Plain identical boxes that differ only by fill colour fail.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "judgement",
+          "description": "Game objects are creative CSS/DOM shapes rather than labelled coloured boxes",
+          "maxMark": 1,
+          "wsosSection": 3,
+          "judgementScoreDescription": [
+            "Objects are missing, or are plain rectangles with text labels only",
+            "Some CSS styling exists, but most objects remain simple boxes with little shape, shadow, or detail",
+            "Objects use CSS shapes, gradients, shadows, glow, or pseudo-elements and read as a player, packs, hazards, and cabinet",
+            "Highly distinctive, game-like CSS/DOM art for the e-bike, packs, boost, potholes, pedestrians, cabinet, and terrain, with subtle animation or polish that stays readable on the kiosk"
+          ]
+        },
+        {
+          "type": "judgement",
+          "description": "HUD, legend, and Charge Card studio share one coherent SwapLoop visual system",
+          "maxMark": 0.5,
+          "wsosSection": 3,
+          "judgementScoreDescription": [
+            "Game HUD and studio look like unrelated pages; no shared type, colour, or control language",
+            "Some shared colours or fonts, but spacing, controls, and hierarchy still feel disconnected",
+            "HUD, legend, and studio clearly belong together: consistent type, colour, and control styling",
+            "A tight kiosk visual system: ChargeRun and the studio feel like one branded SwapLoop product, including controls and card preview"
+          ]
+        },
+        {
+          "type": "judgement",
+          "description": "Overall kiosk visual design (modern game-like ChargeRun; wireframes are functional references only)",
+          "maxMark": 1.5,
+          "wsosSection": 3,
+          "judgementScoreDescription": [
+            "Unfinished or generic UI; poor contrast; layout fights the 1280×720 stage; or the wireframe look is copied as the visual design",
+            "Readable kiosk layout with basic styling, but weak hierarchy, sparse branding, or inconsistent polish between game and studio",
+            "Clear kiosk presentation, good contrast, Inter used well, and a modern game-like ChargeRun that does not clone the wireframe styling",
+            "Polished, distinctive SwapLoop kiosk: strong hierarchy, intentional colour, and a game-like ChargeRun plus studio that feel designed rather than templated"
+          ]
+        }
+      ]
+    }
+  ]
+}
