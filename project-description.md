@@ -59,6 +59,16 @@ High-level capabilities (details in [Requirements](#requirements)):
 
 The competitor should design a **kiosk-like** ChargeRun screen with a modern, game-like feel. Only the **Inter** font is provided. Colors, layout details, and visual style are up to the competitor. Wireframes and the example video are **functional references only** (required items and behaviour). They show structure, not the look to copy; the wireframe design itself must not be reproduced.
 
+Functional references:
+
+- Game screen wireframe: [`assets/wireframes/1-game-screen.png`](./assets/wireframes/1-game-screen.png)
+- Charge Card studio wireframe: [`assets/wireframes/2-charge-card-studio-screen.png`](./assets/wireframes/2-charge-card-studio-screen.png)
+- Example behaviour video: [`assets/wireframes/video-example.mov`](./assets/wireframes/video-example.mov)
+
+![Game screen wireframe](./assets/wireframes/1-game-screen.png)
+
+![Charge Card studio wireframe](./assets/wireframes/2-charge-card-studio-screen.png)
+
 Game objects - the e-bike, energy packs, boost pack, potholes, pedestrians, cabinet, and terrain - should be **creative CSS shapes** built with DOM/CSS (gradients, shadows, glow, pseudo-elements, subtle animation). Plain coloured boxes with text labels are not enough. Each item must be **instantly distinguishable** by shape and styling, not colour alone.
 
 The HUD, the Legend, and the Charge Card studio should share one coherent SwapLoop style.
@@ -94,7 +104,7 @@ There is **no** Start button. Opening the Game screen always leaves the run in `
 #### Grid (fixed structure)
 
 1. Build a rectangular grid of **DOM cells**.
-2. A hardcoded grid has been provided for you in the `layout.js` file.
+2. A hardcoded grid is provided in [`assets/layout.js`](./assets/layout.js) (`BASE_LAYOUT`).
 3. Distinguish cell types visually (by color, border, label or texture).
 
 #### Per-run randomization
@@ -103,7 +113,7 @@ Every time a run is set up (app load, and every **Play again**), roll a **new** 
 
 1. **Energy packs (4):** randomly choose **4 distinct `ROAD` cells** that are not `SPAWN` and not `CABINET`. Place one energy pack on each. Among those four, randomly mark **exactly 1** as a **boost pack** (`+40` energy instead of `+25`).
 2. **Potholes (2):** randomly choose **2 distinct `ROAD` cells** that are not `SPAWN`, not `CABINET`, and not occupied by an energy pack. Place one pothole on each.
-3. **Pedestrian routes (2):** you are provided with hard-coded list of a few pedestrian paths in the `layout.js` file (each path is an ordered list of `ROAD` coordinates). For each run, randomly assign **2 different** paths from that catalogue to the two pedestrians. Randomly choose each pedestrian’s starting index on their path and whether they begin moving forward or backward along the path.
+3. **Pedestrian routes (2):** a hard-coded catalogue of pedestrian paths is provided in [`assets/layout.js`](./assets/layout.js) (`PEDESTRIAN_PATH_CATALOGUE`; each path is an ordered list of `ROAD` coordinates). For each run, randomly assign **2 different** paths from that catalogue to the two pedestrians. Randomly choose each pedestrian’s starting index on their path and whether they begin moving forward or backward along the path.
 4. After rolling, render the grid and place the player on `SPAWN` in `READY`.
 
 #### Player movement
@@ -215,8 +225,7 @@ From bottom to top:
 3. **Dynamic text** drawn with canvas text APIs at the positions below:
    - **Name** - player display name
      - Font: 28px, regular
-     - x (right edge): 927, y: 55
-     - The text should have a right aligned feeling, where the right side is always at x=800
+     - Right-aligned: the right edge of the text sits at x=927, y=55
    - **Outcome** - exactly `SAFE ARRIVAL / 平安抵达` (with color #91FF89) on win, or exactly `RUN ENDED / 比赛结束` (with color #FF8989) on lose
      - Font: 32px, semi bold
      - x: centered, y: 135
