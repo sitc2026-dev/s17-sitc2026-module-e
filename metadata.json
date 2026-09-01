@@ -1,7 +1,7 @@
 {
   "name": "SITC2026 S17 - Module E",
   "displayName": "SwapLoop ChargeRun Interactive Frontend App",
-  "description": "Build a fixed 1280×720 kiosk SPA for SwapLoop ChargeRun: a DOM/CSS grid minigame with energy, packs, potholes, pedestrians, and scoring, plus a canvas Charge Card studio with upload, signature, download, share, print, and Chrome installability.",
+  "description": "Build a fixed 1280x720 kiosk SPA for SwapLoop ChargeRun: a DOM/CSS grid minigame with energy, packs, potholes, pedestrians, and scoring, plus a canvas Charge Card studio with upload, signature, download, share, print, and Chrome installability.",
   "url": "https://github.com/marketable-it-skills/s17-sitc2026-module-e",
   "skillDomainIds": [1],
   "languages": ["EN"],
