@@ -305,4 +305,4 @@ Assessed in the latest Google Chrome by manual testing and expert review. Observ
 | 4            | Front-End Development                  | 9.1    |
 | **Total**    |                                        | **16** |
 
-This is a client-only module, so Section 5 (Back-End Development) is not used. Section 4 is larger than the usual band because ChargeRun rules and the Charge Card studio are front-end behaviour. Exact aspects are in [`marking/marking-scheme.json`](./marking/marking-scheme.json).
+This is a client-only module, so Section 5 (Back-End Development) is not used.
